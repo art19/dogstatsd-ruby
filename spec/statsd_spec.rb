@@ -1,7 +1,7 @@
 require_relative 'helper'
 require 'socket'
 require 'stringio'
-require 'mocha/mini_test'
+require 'mocha/minitest'
 
 SingleCov.covered! file: 'lib/datadog/statsd.rb' if RUBY_VERSION > "2.0"
 
@@ -19,6 +19,32 @@ describe Datadog::Statsd do
   describe ".VERSION" do
     it "has a version" do
       Datadog::Statsd.VERSION.must_match(/^\d+\.\d+\.\d+/)
+    end
+  end
+
+  describe '.current' do
+    before { Datadog::Statsd.current = nil }
+
+    it 'returns a default instance' do
+      Datadog::Statsd.current.must_be_instance_of(Datadog::Statsd)
+      Datadog::Statsd.current.host.must_equal(Datadog::Statsd::DEFAULT_HOST)
+      Datadog::Statsd.current.port.must_equal(Datadog::Statsd::DEFAULT_PORT)
+    end
+
+    it 'honors the provided arguments' do
+      Datadog::Statsd.current('sample.lvh.me', port = 1515)
+      Datadog::Statsd.current.host.must_equal('sample.lvh.me')
+      Datadog::Statsd.current.port.must_equal(1515)
+    end
+  end
+
+  describe '.current=' do
+    let(:client) { Datadog::Statsd.new(host = 'real.lvh.me', port = 4711) }
+
+    it 'uses the provided instance' do
+      Datadog::Statsd.current = client
+      Datadog::Statsd.current.host.must_equal('real.lvh.me')
+      Datadog::Statsd.current.port.must_equal(4711)
     end
   end
 

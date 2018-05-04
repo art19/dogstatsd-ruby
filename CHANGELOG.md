@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Unreleased
+
+ * Try to make this thread safe
+ * Introduce Datadog::Statsd.current to simplify access to a universal client instance
+
 ## 3.3.0 / 2018.02.04
 
  * [FEATURE] Add distribution support (beta). See [#72][].
