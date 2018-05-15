@@ -276,14 +276,14 @@ describe Datadog::Statsd do
   describe "#timing" do
     it "should format the message according to the statsd spec" do
       @statsd.timing('foobar', 500)
-      @statsd.socket.recv.must_equal ['foobar:500|ms']
+      @statsd.socket.recv.must_equal ['foobar:500|ms|#un:ms']
     end
 
     describe "with a sample rate" do
       before { class << @statsd; def rand; 0; end; end } # ensure delivery
       it "should format the message according to the statsd spec" do
         @statsd.timing('foobar', 500, :sample_rate=>0.5)
-        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5']
+        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5|#un:ms']
       end
     end
 
@@ -291,7 +291,7 @@ describe Datadog::Statsd do
       before { class << @statsd; def rand; 0; end; end } # ensure delivery
       it "should format the message according to the statsd spec" do
         @statsd.timing('foobar', 500, 0.5)
-        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5']
+        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5|#un:ms']
       end
     end
   end
@@ -306,7 +306,7 @@ describe Datadog::Statsd do
         @statsd.time('foobar') do
           stub_time 1
         end
-        @statsd.socket.recv.must_equal ['foobar:1000|ms']
+        @statsd.socket.recv.must_equal ['foobar:1000|ms|#un:ms']
       end
 
       it "should still time if block is failing" do
@@ -314,7 +314,7 @@ describe Datadog::Statsd do
           stub_time 1
           raise StandardError, 'This is failing'
         end rescue
-        @statsd.socket.recv.must_equal ['foobar:1000|ms']
+        @statsd.socket.recv.must_equal ['foobar:1000|ms|#un:ms']
       end
 
       def helper_time_return
@@ -326,7 +326,7 @@ describe Datadog::Statsd do
 
       it "should still time if block `return`s" do
         helper_time_return
-        @statsd.socket.recv.must_equal ['foobar:1000|ms']
+        @statsd.socket.recv.must_equal ['foobar:1000|ms|#un:ms']
       end
     end
 
@@ -348,7 +348,7 @@ describe Datadog::Statsd do
         @statsd.time('foobar', :sample_rate=>0.5) do
           stub_time 1
         end
-        @statsd.socket.recv.must_equal ['foobar:1000|ms|@0.5']
+        @statsd.socket.recv.must_equal ['foobar:1000|ms|@0.5|#un:ms']
       end
     end
 
@@ -359,7 +359,7 @@ describe Datadog::Statsd do
         @statsd.time('foobar', 0.5) do
           stub_time 1
         end
-        @statsd.socket.recv.must_equal ['foobar:1000|ms|@0.5']
+        @statsd.socket.recv.must_equal ['foobar:1000|ms|@0.5|#un:ms']
       end
     end
   end
@@ -369,7 +369,7 @@ describe Datadog::Statsd do
       before { class << @statsd; def rand; raise end; end }
       it "should send" do
         @statsd.timing('foobar', 500, :sample_rate=>1)
-        @statsd.socket.recv.must_equal ['foobar:500|ms']
+        @statsd.socket.recv.must_equal ['foobar:500|ms|#un:ms']
       end
     end
 
@@ -377,7 +377,7 @@ describe Datadog::Statsd do
       before { class << @statsd; def rand; 0; end; end } # ensure delivery
       it "should send" do
         @statsd.timing('foobar', 500, :sample_rate=>0.5)
-        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5']
+        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5|#un:ms']
       end
     end
 
@@ -392,7 +392,7 @@ describe Datadog::Statsd do
       before { class << @statsd; def rand; 0; end; end } # ensure delivery
       it "should send" do
         @statsd.timing('foobar', 500, :sample_rate=>0.5)
-        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5']
+        @statsd.socket.recv.must_equal ['foobar:500|ms|@0.5|#un:ms']
       end
     end
   end
@@ -419,7 +419,7 @@ describe Datadog::Statsd do
 
     it "should add namespace to timing" do
       @statsd.timing('foobar', 500)
-      @statsd.socket.recv.must_equal ['service.foobar:500|ms']
+      @statsd.socket.recv.must_equal ['service.foobar:500|ms|#un:ms']
     end
 
     it "should add namespace to gauge" do
@@ -679,7 +679,7 @@ describe Datadog::Statsd do
 
     it "timing support tags" do
       @statsd.timing("t", 200, :tags=>%w(country:canada other))
-      @statsd.socket.recv.must_equal ['t:200|ms|#country:canada,other']
+      @statsd.socket.recv.must_equal ['t:200|ms|#country:canada,other,un:ms']
 
       @statsd.time('foobar', :tags => ["123"]) { sleep(0.001); 'test' }
     end
