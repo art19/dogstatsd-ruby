@@ -252,6 +252,8 @@ module Datadog
     # @option opts [Array<String>] :tags An array of tags
     def timing(stat, ms, opts={})
       opts = {:sample_rate => opts} if opts.is_a? Numeric
+      opts[:tags] ||= []
+      opts[:tags] << 'un:ms'
       send_stats stat, ms, TIMING_TYPE, opts
     end
 
