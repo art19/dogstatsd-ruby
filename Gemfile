@@ -5,7 +5,7 @@ gem 'rack', '~> 1.6'
 gem 'minitest'
 gem "yard", "~> 0.8.7.3"
 gem 'single_cov'
-gem 'concurrent-ruby', '~> 1.0.5', require: 'concurrent'
+gem 'concurrent-ruby', '~> 1.0.5'
 
 if RUBY_VERSION >= "2.0.0"
   gem 'rubocop', "~> 0.49.0" # bump this and TargetRubyVersion once we drop ruby 1.9
