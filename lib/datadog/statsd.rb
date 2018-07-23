@@ -54,11 +54,12 @@ module Datadog
     MAX_EVENT_SIZE = 8 * 1024
 
     COUNTER_TYPE = 'c'.freeze
+    DISTRIBUTION_TYPE = 'd'.freeze
     GAUGE_TYPE = 'g'.freeze
     HISTOGRAM_TYPE = 'h'.freeze
-    DISTRIBUTION_TYPE = 'd'.freeze
-    TIMING_TYPE = 'ms'.freeze
     SET_TYPE = 's'.freeze
+    TIMING_TYPE = 'ms'.freeze
+    UNIT_MS = ['un:ms'].freeze
     VERSION = "3.3.0".freeze
 
     # A namespace to prepend to all statsd calls. Defaults to no namespace.
@@ -219,8 +220,7 @@ module Datadog
     def timing(stat, ms, opts=EMPTY_OPTIONS)
       opts = {:sample_rate => opts} if opts.is_a? Numeric
       tags = opts[:tags] || []
-      tags << 'un:ms'
-      send_stats stat, ms, TIMING_TYPE, opts.merge(tags: tags)
+      send_stats stat, ms, TIMING_TYPE, opts.merge(tags: tags + UNIT_MS)
     end
 
     # Reports execution time of the provided block using {#timing}.
