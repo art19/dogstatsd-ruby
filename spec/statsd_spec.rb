@@ -843,7 +843,7 @@ describe Datadog::Statsd do
     end
 
     it "produces low amounts of garbage for timeing" do
-      assert_allocations(6) { @statsd.time('foobar') { 1111 } }
+      assert_allocations(13) { @statsd.time('foobar') { 1111 } }
     end
 
     def assert_allocations(count, &block)

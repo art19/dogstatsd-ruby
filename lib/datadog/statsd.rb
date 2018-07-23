@@ -218,9 +218,9 @@ module Datadog
     # @option opts [Array<String>] :tags An array of tags
     def timing(stat, ms, opts=EMPTY_OPTIONS)
       opts = {:sample_rate => opts} if opts.is_a? Numeric
-      opts[:tags] ||= []
-      opts[:tags] << 'un:ms'
-      send_stats stat, ms, TIMING_TYPE, opts
+      tags = opts[:tags] || []
+      tags << 'un:ms'
+      send_stats stat, ms, TIMING_TYPE, opts.merge(tags: tags)
     end
 
     # Reports execution time of the provided block using {#timing}.
