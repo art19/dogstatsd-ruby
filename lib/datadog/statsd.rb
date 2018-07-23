@@ -54,13 +54,13 @@ module Datadog
     MAX_EVENT_SIZE = 8 * 1024
 
     COUNTER_TYPE = 'c'.freeze
+    DISTRIBUTION_TYPE = 'd'.freeze
     GAUGE_TYPE = 'g'.freeze
     HISTOGRAM_TYPE = 'h'.freeze
-    DISTRIBUTION_TYPE = 'd'.freeze
-    TIMING_TYPE = 'ms'.freeze
     SET_TYPE = 's'.freeze
-    VERSION = "3.3.0".freeze
+    TIMING_TYPE = 'ms'.freeze
     UNIT_MS = ['un:ms'].freeze
+    VERSION = "3.3.0".freeze
 
     # A namespace to prepend to all statsd calls. Defaults to no namespace.
     attr_reader :namespace
