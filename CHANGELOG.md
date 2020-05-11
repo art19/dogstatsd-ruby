@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+ * Try to make this thread safe
+
 [//]: # (comment: Don't forget to update lib/datadog/statsd.rb:DogStatsd::Statsd::VERSION when releasing a new version)
 
 ## 4.8.0 / 2020.04.20

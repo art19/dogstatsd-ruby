@@ -7,6 +7,7 @@ gem 'minitest-matchers'
 gem 'yard', '~> 0.9.20'
 gem 'single_cov'
 gem 'climate_control'
+gem 'concurrent-ruby'
 
 if RUBY_VERSION >= '2.0.0'
   gem 'rubocop', '~> 0.50.0' # bump this and TargetRubyVersion once we drop ruby 2.0
