@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
+require 'concurrent'
+require 'monitor'
 require_relative 'connection'
 
 module Datadog
   class Statsd
     class UDPConnection < Connection
+      include MonitorMixin
+
       DEFAULT_HOST = '127.0.0.1'
       DEFAULT_PORT = 8125
 
@@ -25,7 +29,7 @@ module Datadog
 
       def connect
         UDPSocket.new.tap do |socket|
-          socket.connect(host, port)
+          synchronize { socket.connect(host, port) }
         end
       end
 

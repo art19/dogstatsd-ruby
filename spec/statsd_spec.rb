@@ -464,7 +464,7 @@ describe Datadog::Statsd do
     let(:sample_rate) { nil }
     let(:tags) { nil }
 
-    it_behaves_like 'a metrics method', 'foobar:500|ms' do
+    it_behaves_like 'a metrics method', 'foobar:500|ms|#un:ms' do
       let(:basic_action) do
         subject.timing('foobar', 500, tags: action_tags)
       end
@@ -472,7 +472,7 @@ describe Datadog::Statsd do
 
     it 'sends the timing' do
       subject.timing('foobar', 500)
-      expect(socket.recv[0]).to eq_with_telemetry 'foobar:500|ms'
+      expect(socket.recv[0]).to eq_with_telemetry 'foobar:500|ms|#un:ms'
     end
 
     context 'with a sample rate' do
@@ -482,7 +482,7 @@ describe Datadog::Statsd do
 
       it 'sends the timing with the sample rate' do
         subject.timing('foobar', 500, sample_rate: 0.5)
-        expect(socket.recv[0]).to eq_with_telemetry 'foobar:500|ms|@0.5'
+        expect(socket.recv[0]).to eq_with_telemetry 'foobar:500|ms|@0.5|#un:ms'
       end
     end
 
@@ -493,7 +493,7 @@ describe Datadog::Statsd do
 
       it 'sends the timing with the sample rate' do
         subject.timing('foobar', 500, 0.5)
-        expect(socket.recv[0]).to eq_with_telemetry 'foobar:500|ms|@0.5'
+        expect(socket.recv[0]).to eq_with_telemetry 'foobar:500|ms|@0.5|#un:ms'
       end
     end
   end
@@ -516,7 +516,7 @@ describe Datadog::Statsd do
       allow(Process).to receive(:clock_gettime).and_return(0) if Datadog::Statsd::PROCESS_TIME_SUPPORTED
     end
 
-    it_behaves_like 'a metrics method', 'foobar:1000|ms' do
+    it_behaves_like 'a metrics method', 'foobar:1000|ms|#un:ms' do
       let(:basic_action) do
         subject.time('foobar', tags: action_tags) do
           Timecop.travel(after_date)
@@ -532,7 +532,7 @@ describe Datadog::Statsd do
           allow(Process).to receive(:clock_gettime).and_return(1) if Datadog::Statsd::PROCESS_TIME_SUPPORTED
         end
 
-        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms'
+        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms|#un:ms'
       end
 
       it 'ensures the timing is sent' do
@@ -544,7 +544,7 @@ describe Datadog::Statsd do
         end rescue nil
         # rubocop:enable Lint/RescueWithoutErrorClass
 
-        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms'
+        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms|#un:ms'
       end
     end
 
@@ -579,7 +579,7 @@ describe Datadog::Statsd do
           allow(Process).to receive(:clock_gettime).and_return(1) if Datadog::Statsd::PROCESS_TIME_SUPPORTED
         end
 
-        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms|@0.5'
+        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms|@0.5|#un:ms'
       end
     end
 
@@ -594,7 +594,7 @@ describe Datadog::Statsd do
           allow(Process).to receive(:clock_gettime).and_return(1) if Datadog::Statsd::PROCESS_TIME_SUPPORTED
         end
 
-        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms|@0.5'
+        expect(socket.recv[0]).to eq_with_telemetry 'foobar:1000|ms|@0.5|#un:ms'
       end
     end
   end
@@ -1029,13 +1029,13 @@ describe Datadog::Statsd do
           s.event('ev', 'text')
         end
 
-        expect(socket.recv[0]).to eq_with_telemetry("test:1|c\ntest:-1|c\ntest:21|c\ntest:21|g\ntest:21|h\ntest:21|ms\ntest:21|s\n_sc|sc|0\n_e{2,4}:ev|text",
+        expect(socket.recv[0]).to eq_with_telemetry("test:1|c\ntest:-1|c\ntest:21|c\ntest:21|g\ntest:21|h\ntest:21|ms|#un:ms\ntest:21|s\n_sc|sc|0\n_e{2,4}:ev|text",
           metrics: 7,
           service_checks: 1,
           events: 1
         )
 
-        expect(subject.telemetry.flush).to eq_with_telemetry('', metrics: 0, service_checks: 0, events: 0, packets_sent: 1, bytes_sent: 766)
+        expect(subject.telemetry.flush).to eq_with_telemetry('', metrics: 0, service_checks: 0, events: 0, packets_sent: 1, bytes_sent: 773)
       end
     end
 
@@ -1065,7 +1065,7 @@ describe Datadog::Statsd do
         subject.gauge('test', 21)
         expect(socket.recv[0]).to eq_with_telemetry('test:21|g', metrics: 3, service_checks: 0, events: 0, packets_dropped: 2, bytes_dropped: 1364)
 
-        expect(subject.telemetry.flush).to eq_with_telemetry('', metrics: 0, service_checks: 0, events: 0, packets_sent: 1, bytes_sent: 684)
+        expect(subject.telemetry.flush).to eq_with_telemetry('', metrics: 0, service_checks: 0, events: 0, packets_sent: 1, bytes_sent: 691)
       end
     end
   end

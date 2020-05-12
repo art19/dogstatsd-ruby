@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'socket'
 
 require_relative 'statsd/version'
@@ -42,6 +43,7 @@ module Datadog
     DISTRIBUTION_TYPE = 'd'
     TIMING_TYPE = 'ms'
     SET_TYPE = 's'
+    UNIT_MS = ['un:ms'].freeze
 
     # A namespace to prepend to all statsd calls. Defaults to no namespace.
     attr_reader :namespace
@@ -109,6 +111,8 @@ module Datadog
       @logger = logger
 
       @sample_rate = sample_rate
+
+      @buffer = Concurrent::Array.new
 
       # we reduce max_buffer_bytes by a the rough estimate of the telemetry payload
       @batch = Batch.new(connection, (max_buffer_bytes - telemetry.estimate_max_size))
@@ -220,7 +224,7 @@ module Datadog
     # @option opts [Array<String>] :tags An array of tags
     def timing(stat, ms, opts = EMPTY_OPTIONS)
       opts = { sample_rate: opts } if opts.is_a?(Numeric)
-      send_stats(stat, ms, TIMING_TYPE, opts)
+      send_stats stat, ms, TIMING_TYPE, opts.merge(tags: tags + UNIT_MS)
     end
 
     # Reports execution time of the provided block using {#timing}.

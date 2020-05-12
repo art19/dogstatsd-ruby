@@ -1,9 +1,16 @@
 # frozen_string_literal: true
 
+require 'concurrent'
+require 'monitor'
+
 module Datadog
   class Statsd
     class Batch
+      include MonitorMixin
+
       def initialize(connection, max_buffer_bytes)
+        super()
+
         @connection = connection
         @max_buffer_bytes = max_buffer_bytes
         @depth = 0
@@ -11,11 +18,10 @@ module Datadog
       end
 
       def open
-        @depth += 1
-
+        synchronize { @depth += 1 }
         yield
       ensure
-        @depth -= 1
+        synchronize { @depth -= 1 }
         flush if !open?
       end
 
@@ -24,19 +30,21 @@ module Datadog
       end
 
       def add(message)
-        message_bytes = message.bytesize
+        synchronize do
+          message_bytes = message.bytesize
 
-        unless @buffer_bytes == 0
-          if @buffer_bytes + 1 + message_bytes >= @max_buffer_bytes
-            flush
-          else
-            @buffer << "\n"
-            @buffer_bytes += 1
+          unless @buffer_bytes == 0
+            if @buffer_bytes + 1 + message_bytes >= @max_buffer_bytes
+              flush
+            else
+              @buffer << "\n"
+              @buffer_bytes += 1
+            end
           end
-        end
 
-        @buffer << message
-        @buffer_bytes += message_bytes
+          @buffer << message
+          @buffer_bytes += message_bytes
+        end
       end
 
       def flush
