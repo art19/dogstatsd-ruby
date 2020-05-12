@@ -463,8 +463,27 @@ describe Datadog::Statsd do
     let(:namespace) { nil }
     let(:sample_rate) { nil }
     let(:tags) { nil }
+    let(:action_tags) { [] }
 
-    it_behaves_like 'a metrics method', 'foobar:500|ms|#un:ms' do
+    # it_behaves_like 'a metrics method', 'foobar:500|ms|#un:ms' do
+    #   let(:basic_action) do
+    #     subject.timing('foobar', 500, tags: action_tags)
+    #   end
+    # end
+
+    it_behaves_like 'a namespaceable method', 'foobar:500|ms|#un:ms' do
+      let(:basic_action) do
+        subject.timing('foobar', 500, tags: action_tags)
+      end
+    end
+
+    it_behaves_like 'a log debuggable method', 'foobar:500|ms|#un:ms' do
+      let(:basic_action) do
+        subject.timing('foobar', 500, tags: action_tags)
+      end
+    end
+
+    it_behaves_like 'a taggable method', 'foobar:500|ms' do
       let(:basic_action) do
         subject.timing('foobar', 500, tags: action_tags)
       end
@@ -996,10 +1015,10 @@ describe Datadog::Statsd do
       expect(socket.recv[0]).to eq_with_telemetry('test:21|h', metrics: 1, packets_sent: 1, bytes_sent: 683)
 
       subject.timing('test', 21)
-      expect(socket.recv[0]).to eq_with_telemetry('test:21|ms', metrics: 1, packets_sent: 1, bytes_sent: 683)
+      expect(socket.recv[0]).to eq_with_telemetry('test:21|ms|#un:ms', metrics: 1, packets_sent: 1, bytes_sent: 683)
 
       subject.set('test', 21)
-      expect(socket.recv[0]).to eq_with_telemetry('test:21|s', metrics: 1, packets_sent: 1, bytes_sent: 684)
+      expect(socket.recv[0]).to eq_with_telemetry('test:21|s', metrics: 1, packets_sent: 1, bytes_sent: 691)
 
       subject.service_check('sc', 0)
       expect(socket.recv[0]).to eq_with_telemetry('_sc|sc|0', metrics: 0, service_checks: 1, packets_sent: 1, bytes_sent: 683)
@@ -1065,7 +1084,7 @@ describe Datadog::Statsd do
         subject.gauge('test', 21)
         expect(socket.recv[0]).to eq_with_telemetry('test:21|g', metrics: 3, service_checks: 0, events: 0, packets_dropped: 2, bytes_dropped: 1364)
 
-        expect(subject.telemetry.flush).to eq_with_telemetry('', metrics: 0, service_checks: 0, events: 0, packets_sent: 1, bytes_sent: 691)
+        expect(subject.telemetry.flush).to eq_with_telemetry('', metrics: 0, service_checks: 0, events: 0, packets_sent: 1, bytes_sent: 684)
       end
     end
   end
