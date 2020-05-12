@@ -465,25 +465,7 @@ describe Datadog::Statsd do
     let(:tags) { nil }
     let(:action_tags) { [] }
 
-    # it_behaves_like 'a metrics method', 'foobar:500|ms|#un:ms' do
-    #   let(:basic_action) do
-    #     subject.timing('foobar', 500, tags: action_tags)
-    #   end
-    # end
-
-    it_behaves_like 'a namespaceable method', 'foobar:500|ms|#un:ms' do
-      let(:basic_action) do
-        subject.timing('foobar', 500, tags: action_tags)
-      end
-    end
-
-    it_behaves_like 'a log debuggable method', 'foobar:500|ms|#un:ms' do
-      let(:basic_action) do
-        subject.timing('foobar', 500, tags: action_tags)
-      end
-    end
-
-    it_behaves_like 'a taggable method', 'foobar:500|ms' do
+    it_behaves_like 'a metrics method with timing', 'foobar:500|ms' do
       let(:basic_action) do
         subject.timing('foobar', 500, tags: action_tags)
       end
@@ -535,7 +517,7 @@ describe Datadog::Statsd do
       allow(Process).to receive(:clock_gettime).and_return(0) if Datadog::Statsd::PROCESS_TIME_SUPPORTED
     end
 
-    it_behaves_like 'a metrics method', 'foobar:1000|ms|#un:ms' do
+    it_behaves_like 'a metrics method with timing', 'foobar:1000|ms' do
       let(:basic_action) do
         subject.time('foobar', tags: action_tags) do
           Timecop.travel(after_date)

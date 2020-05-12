@@ -5,7 +5,5 @@ rvm:
   - 2.6
 script:
   - bundle exec rubocop
-  - bundle exec rake $TASK
-env:
-  - TASK=spec
+  - bundle exec rake spec
 bundler_args: --without=localdev
