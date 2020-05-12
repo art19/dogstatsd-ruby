@@ -9,5 +9,5 @@ env:
 matrix:
   include:
     env: TASK=rubocop
-    rvm: 2.5
+    rvm: 2.6
 bundler_args: --without=localdev
