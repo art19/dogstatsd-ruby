@@ -3,11 +3,9 @@ sudo: false
 language: ruby
 rvm:
   - 2.6
-script: bundle exec rake $TASK
+script:
+  - bundle exec rubocop
+  - bundle exec rake $TASK
 env:
   - TASK=spec
-matrix:
-  include:
-    env: TASK=rubocop
-    rvm: 2.6
 bundler_args: --without=localdev
