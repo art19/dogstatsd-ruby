@@ -46,6 +46,8 @@ describe 'Allocations and garbage collection' do
         18
       elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
         17
+      elsif RUBY_VERSION >= '2.6.0'
+        15
       else
         16
       end
@@ -73,6 +75,8 @@ describe 'Allocations and garbage collection' do
           9
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           8
+        elsif RUBY_VERSION >= '2.6.0'
+          6
         else
           7
         end
@@ -91,6 +95,8 @@ describe 'Allocations and garbage collection' do
           26
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           25
+        elsif RUBY_VERSION >= '2.6.0'
+          23
         else
           24
         end
@@ -115,6 +121,8 @@ describe 'Allocations and garbage collection' do
         18
       elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
         17
+      elsif RUBY_VERSION >= '2.6.0'
+        22
       else
         16
       end
@@ -142,6 +150,8 @@ describe 'Allocations and garbage collection' do
           9
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           8
+        elsif RUBY_VERSION >= '2.6.0'
+          13
         else
           7
         end
@@ -160,6 +170,8 @@ describe 'Allocations and garbage collection' do
           26
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           25
+        elsif RUBY_VERSION >= '2.6.0'
+          29
         else
           24
         end
@@ -184,6 +196,8 @@ describe 'Allocations and garbage collection' do
         19
       elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
         18
+      elsif RUBY_VERSION >= '2.6.0'
+        16
       else
         17
       end
@@ -211,6 +225,8 @@ describe 'Allocations and garbage collection' do
           10
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           9
+        elsif RUBY_VERSION >= '2.6.0'
+          7
         else
           8
         end
@@ -229,6 +245,8 @@ describe 'Allocations and garbage collection' do
           28
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           27
+        elsif RUBY_VERSION >= '2.6.0'
+          25
         else
           26
         end
@@ -253,6 +271,8 @@ describe 'Allocations and garbage collection' do
         15
       elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
         14
+      elsif RUBY_VERSION >= '2.6.0'
+        12
       else
         13
       end
@@ -280,6 +300,8 @@ describe 'Allocations and garbage collection' do
           6
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           5
+        elsif RUBY_VERSION >= '2.6.0'
+          3
         else
           4
         end
@@ -298,6 +320,8 @@ describe 'Allocations and garbage collection' do
           24
         elsif RUBY_VERSION >= '2.4.0' && RUBY_VERSION < '2.5.0'
           23
+        elsif RUBY_VERSION >= '2.6.0'
+          21
         else
           22
         end
