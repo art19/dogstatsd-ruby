@@ -45,7 +45,7 @@ describe 'Allocations and garbage collection' do
       if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
         17
       else
-        16
+        15
       end
     end
 
@@ -70,7 +70,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           8
         else
-          7
+          6
         end
       end
 
@@ -86,7 +86,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           25
         else
-          24
+          23
         end
       end
 
@@ -108,7 +108,7 @@ describe 'Allocations and garbage collection' do
       if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
         24
       else
-        16
+        22
       end
     end
 
@@ -133,7 +133,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           15
         else
-          7
+          13
         end
       end
 
@@ -149,7 +149,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           31
         else
-          24
+          29
         end
       end
 
@@ -171,7 +171,7 @@ describe 'Allocations and garbage collection' do
       if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
         18
       else
-        17
+        16
       end
     end
 
@@ -196,7 +196,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           9
         else
-          8
+          7
         end
       end
 
@@ -212,7 +212,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           27
         else
-          26
+          25
         end
       end
 
@@ -234,7 +234,7 @@ describe 'Allocations and garbage collection' do
       if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
         14
       else
-        13
+        12
       end
     end
 
@@ -259,7 +259,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           5
         else
-          4
+          3
         end
       end
 
@@ -275,7 +275,7 @@ describe 'Allocations and garbage collection' do
         if RUBY_VERSION >= '2.6.6' && RUBY_VERSION < '2.7.0'
           23
         else
-          22
+          21
         end
       end
 
